@@ -10,6 +10,7 @@ public class Main {
         ServerSocket socketEspecial = null;
         try {
             socketEspecial = new ServerSocket(8080);
+            System.out.println("Servidor iniciado en puerto 8080...");
         } catch (IOException e) {
             System.out.println("Hubo problemas en la conexion de red");
             System.exit(1);
@@ -18,6 +19,7 @@ public class Main {
         Socket cliente = null;
         try {
             cliente = socketEspecial.accept();
+            System.out.println("Cliente conectado.");
         } catch (IOException e) {
             System.out.println("Hubo problemas en la conexion de red");
             System.exit(1);
@@ -56,7 +58,7 @@ public class Main {
                     }
 
                     if (numeroCliente == numeroSecreto) {
-                        escritor.println("¡Felicidades crack! haz adivinaste el número " + numeroSecreto + " en el intento " + i);
+                        escritor.println("¡Felicidades! Adivinaste el número " + numeroSecreto + " en el intento " + i);
                         adivinado = true;
                         break;
                     } else {
@@ -66,19 +68,19 @@ public class Main {
 
                 if (!adivinado) {
                     escritor.println("Eres menso, el número era: " + numeroSecreto);
-                    escritor.println("FIN");
-                    seguirJugando = false;
-                } else {
-                    escritor.println("Hay perro, eres un master, ¿Quieres volver a jugar? (SI)(NO)");
-                    String respuestita = lectorSocket.readLine();
+                }
 
-                if (respuestita == null || !respuestita.equalsIgnoreCase("SI")) {
+
+                escritor.println("¿Quieres jugar de nuevo? (SI/NO)");
+                String respuesta = lectorSocket.readLine();
+
+                if (respuesta == null || !respuesta.equalsIgnoreCase("SI")) {
                     seguirJugando = false;
                     escritor.println("FIN");
-                    System.out.println("Tu te lo pierdes viejon");
+                    System.out.println("El cliente decidió terminar.");
                 }
             }
-        }
+
             System.out.println("Juego terminado. Servidor se cierra.");
         } catch (IOException e) {
             System.out.println("Error de comunicacion entre los sockets");
