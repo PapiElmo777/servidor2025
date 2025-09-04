@@ -10,7 +10,7 @@ public class Main {
         ServerSocket socketEspecial = null;
         try {
             socketEspecial = new ServerSocket(7777);
-            System.out.println("Servidor iniciado en puerto 8080...");
+            System.out.println("Servidor iniciado en puerto 7777...");
         } catch (IOException e) {
             System.out.println("Hubo problemas en la conexion de red");
             System.exit(1);
@@ -56,9 +56,13 @@ public class Main {
                         i--;
                         continue;
                     }
-
+                    if (numeroCliente < 1 || numeroCliente > 10) {
+                        escritor.println("No lees o que? el numero debe de ser entre 1 y 10.");
+                        i--;
+                        continue;
+                    }
                     if (numeroCliente == numeroSecreto) {
-                        escritor.println("¡Felicidades! Adivinaste el número " + numeroSecreto + " en el intento " + i);
+                        escritor.println("¡QUE PRO! Adivinaste el número " + numeroSecreto + " en el intento " + i);
                         adivinado = true;
                         break;
                     } else {
@@ -67,7 +71,7 @@ public class Main {
                 }
 
                 if (!adivinado) {
-                    escritor.println("Eres menso, el número era: " + numeroSecreto);
+                    escritor.println("Eres un menso, el número era: " + numeroSecreto);
                 }
 
 
