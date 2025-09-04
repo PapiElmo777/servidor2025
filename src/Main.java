@@ -28,39 +28,56 @@ public class Main {
                 BufferedReader lectorSocket = new BufferedReader(new InputStreamReader(cliente.getInputStream()))
         ) {
             Random random = new Random();
-            int numeroSecreto = random.nextInt(10) + 1;
-            int intentos = 3;
-            boolean adivinado = false;
+            boolean seguirJugando = true;
 
-            escritor.println("Adivina el número (entre 1 y 10). ¡Tienes 3 oportunidades!");
+            while (seguirJugando) {
+                int numeroSecreto = random.nextInt(10) + 1;
+                int intentos = 3;
+                boolean adivinado = false;
 
-            for (int i = 1; i <= intentos; i++) {
-                escritor.println("Intento " + i + ": Escribe un número:");
-                String entrada = lectorSocket.readLine();
+                escritor.println("Adivina el número (entre 1 y 10). ¡Tienes 3 oportunidades!");
 
-                int numeroCliente;
-                try {
-                    numeroCliente = Integer.parseInt(entrada);
-                } catch (NumberFormatException e) {
-                    escritor.println("Eso no es un número válido.");
-                    i--;
-                    continue;
+                for (int i = 1; i <= intentos; i++) {
+                    escritor.println("Intento " + i + ": Escribe un número:");
+                    String entrada = lectorSocket.readLine();
+
+                    if (entrada == null) {
+                        seguirJugando = false;
+                        break;
+                    }
+
+                    int numeroCliente;
+                    try {
+                        numeroCliente = Integer.parseInt(entrada);
+                    } catch (NumberFormatException e) {
+                        escritor.println("Eso no es un número válido.");
+                        i--;
+                        continue;
+                    }
+
+                    if (numeroCliente == numeroSecreto) {
+                        escritor.println("¡Felicidades! Adivinaste el número " + numeroSecreto + " en el intento " + i);
+                        adivinado = true;
+                        break;
+                    } else {
+                        escritor.println("Incorrecto.");
+                    }
                 }
 
-                if (numeroCliente == numeroSecreto) {
-                    escritor.println("¡Felicidades! Adivinaste el número " + numeroSecreto + " en el intento " + i);
-                    adivinado = true;
-                    break;
-                } else {
-                    escritor.println("Incorrecto.");
+                if (!adivinado) {
+                    escritor.println("Eres menso, el número era: " + numeroSecreto);
+                }
+
+                escritor.println("¿Quieres jugar de nuevo? (SI/NO)");
+                String respuesta = lectorSocket.readLine();
+
+                if (respuesta == null || !respuesta.equalsIgnoreCase("SI")) {
+                    seguirJugando = false;
+                    escritor.println("FIN");
+                    System.out.println("Tu te lo pierdes viejon");
                 }
             }
 
-            if (!adivinado) {
-                escritor.println("Eres menso, el número era: " + numeroSecreto);
-            }
-
-            escritor.println("FIN");
             System.out.println("Juego terminado. Servidor se cierra.");
         } catch (IOException e) {
             System.out.println("Error de comunicacion entre los sockets");
