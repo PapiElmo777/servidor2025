@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         ServerSocket socketEspecial = null;
         try {
-            socketEspecial = new ServerSocket(8080);
+            socketEspecial = new ServerSocket(7777);
             System.out.println("Servidor iniciado en puerto 8080...");
         } catch (IOException e) {
             System.out.println("Hubo problemas en la conexion de red");
